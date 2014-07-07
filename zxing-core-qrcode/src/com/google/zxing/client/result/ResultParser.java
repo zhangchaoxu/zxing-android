@@ -57,7 +57,7 @@ public abstract class ResultParser {
       new URLTOResultParser(),
       new URIResultParser(),
       new ISBNResultParser(),
-      new ProductResultParser(),
+      //new ProductResultParser(),
       new ExpandedProductResultParser(),
       new VINResultParser(),
   };

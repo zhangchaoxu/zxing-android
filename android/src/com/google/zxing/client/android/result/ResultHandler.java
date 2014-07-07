@@ -226,7 +226,7 @@ public abstract class ResultHandler {
       }
     }
 
-    ArrayList<ContentValues> data = new ArrayList<>();
+    ArrayList<ContentValues> data = new ArrayList<ContentValues>();
     if (urls != null) {
       for (String url : urls) {
         if (url != null && !url.isEmpty()) {

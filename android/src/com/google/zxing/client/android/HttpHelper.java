@@ -38,7 +38,7 @@ public final class HttpHelper {
 
   private static final String TAG = HttpHelper.class.getSimpleName();
 
-  private static final Collection<String> REDIRECTOR_DOMAINS = new HashSet<>(Arrays.asList(
+  private static final Collection<String> REDIRECTOR_DOMAINS = new HashSet<String>(Arrays.asList(
     "amzn.to", "bit.ly", "bitly.com", "fb.me", "goo.gl", "is.gd", "j.mp", "lnkd.in", "ow.ly",
     "R.BEETAGG.COM", "r.beetagg.com", "SCN.BY", "su.pr", "t.co", "tinyurl.com", "tr.im"
   ));
@@ -154,7 +154,9 @@ public final class HttpHelper {
       if (in != null) {
         try {
           in.close();
-        } catch (IOException | NullPointerException ioe) {
+        } catch (IOException ioe) {
+          // continue
+        } catch (NullPointerException npe) {
           // continue
         }
       }
@@ -213,15 +215,25 @@ public final class HttpHelper {
   private static int safelyConnect(HttpURLConnection connection) throws IOException {
     try {
       connection.connect();
-    } catch (NullPointerException | IllegalArgumentException | IndexOutOfBoundsException | SecurityException e) {
-      // this is an Android bug: http://code.google.com/p/android/issues/detail?id=16895
-      throw new IOException(e);
+    // this is an Android bug: http://code.google.com/p/android/issues/detail?id=16895
+    } catch (NullPointerException npe) {    
+      throw new IOException(npe);
+    } catch (IllegalArgumentException iae) {
+      throw new IOException(iae);
+    } catch (IndexOutOfBoundsException ioobe) {
+      throw new IOException(ioobe);
+    } catch (SecurityException se) {
+      throw new IOException(se);
     }
     try {
       return connection.getResponseCode();
-    } catch (NullPointerException | StringIndexOutOfBoundsException | IllegalArgumentException e) {
-      // this is maybe this Android bug: http://code.google.com/p/android/issues/detail?id=15554
-      throw new IOException(e);
+   // this is maybe this Android bug: http://code.google.com/p/android/issues/detail?id=15554
+    } catch (NullPointerException npe) {
+      throw new IOException(npe);
+    } catch (StringIndexOutOfBoundsException sioobe) {
+      throw new IOException(sioobe);
+    } catch (IllegalArgumentException iae) {
+      throw new IOException(iae);
     }
   }
 

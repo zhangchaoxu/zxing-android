@@ -69,7 +69,7 @@ public final class ViewfinderView extends View {
     laserColor = resources.getColor(R.color.viewfinder_laser);
     resultPointColor = resources.getColor(R.color.possible_result_points);
     scannerAlpha = 0;
-    possibleResultPoints = new ArrayList<>(5);
+    possibleResultPoints = new ArrayList<ResultPoint>(5);
     lastPossibleResultPoints = null;
   }
 
@@ -121,7 +121,7 @@ public final class ViewfinderView extends View {
       if (currentPossible.isEmpty()) {
         lastPossibleResultPoints = null;
       } else {
-        possibleResultPoints = new ArrayList<>(5);
+        possibleResultPoints = new ArrayList<ResultPoint>(5);
         lastPossibleResultPoints = currentPossible;
         paint.setAlpha(CURRENT_POINT_OPACITY);
         paint.setColor(resultPointColor);

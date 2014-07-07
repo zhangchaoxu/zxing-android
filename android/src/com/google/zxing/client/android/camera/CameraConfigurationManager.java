@@ -18,6 +18,7 @@ package com.google.zxing.client.android.camera;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.Point;
 import android.hardware.Camera;
 import android.preference.PreferenceManager;
@@ -25,6 +26,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 
+import com.google.zxing.client.android.CaptureActivity;
 import com.google.zxing.client.android.PreferencesActivity;
 
 /**
@@ -54,11 +56,26 @@ final class CameraConfigurationManager {
     display.getSize(theScreenResolution);
     screenResolution = theScreenResolution;
     Log.i(TAG, "Screen resolution: " + screenResolution);
-    cameraResolution = CameraConfigurationUtils.findBestPreviewSizeValue(parameters, screenResolution);
+    
+    // fix 部分机型上图像拉伸 bug
+    Point screenResolutionForCamera = new Point();
+    screenResolutionForCamera.x = screenResolution.x;
+    screenResolutionForCamera.y = screenResolution.y;
+    if (screenResolution.x < screenResolution.y) {
+        screenResolutionForCamera.x = screenResolution.y;
+        screenResolutionForCamera.y = screenResolution.x;
+    }
+    // cameraResolution = CameraConfigurationUtils.findBestPreviewSizeValue(parameters, screenResolution);
+    cameraResolution = CameraConfigurationUtils.findBestPreviewSizeValue(parameters, screenResolutionForCamera);
     Log.i(TAG, "Camera resolution: " + cameraResolution);
   }
 
   void setDesiredCameraParameters(Camera camera, boolean safeMode) {
+	// rotate 90 degree of the camera image
+	// if the screen orientation is SENSOR_PORTRAIT
+	// fix 竖屏模式下摄像头中图像横向显示 bug
+	camera.setDisplayOrientation(90);
+	
     Camera.Parameters parameters = camera.getParameters();
 
     if (parameters == null) {

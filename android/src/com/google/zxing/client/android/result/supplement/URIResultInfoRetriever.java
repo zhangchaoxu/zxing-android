@@ -18,10 +18,11 @@ package com.google.zxing.client.android.result.supplement;
 
 import android.content.Context;
 import android.widget.TextView;
+
 import com.google.zxing.client.android.HttpHelper;
 import com.google.zxing.client.android.history.HistoryManager;
 import com.google.zxing.client.android.R;
-import com.google.zxing.client.result.URIParsedResult;
+import com.google.zxing.client.result.TextParsedResult;
 
 import java.io.IOException;
 import java.net.URI;
@@ -31,10 +32,10 @@ final class URIResultInfoRetriever extends SupplementalInfoRetriever {
 
   private static final int MAX_REDIRECTS = 5;
 
-  private final URIParsedResult result;
+  private final TextParsedResult result;
   private final String redirectString;
 
-  URIResultInfoRetriever(TextView textView, URIParsedResult result, HistoryManager historyManager, Context context) {
+  URIResultInfoRetriever(TextView textView, TextParsedResult result, HistoryManager historyManager, Context context) {
     super(textView, historyManager);
     redirectString = context.getString(R.string.msg_redirect);
     this.result = result;
@@ -44,7 +45,7 @@ final class URIResultInfoRetriever extends SupplementalInfoRetriever {
   void retrieveSupplementalInfo() throws IOException {
     URI oldURI;
     try {
-      oldURI = new URI(result.getURI());
+      oldURI = new URI(result.getText());
     } catch (URISyntaxException ignored) {
       return;
     }

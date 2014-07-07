@@ -32,7 +32,8 @@ public final class ResultHandlerFactory {
 
   public static ResultHandler makeResultHandler(CaptureActivity activity, Result rawResult) {
     ParsedResult result = parseResult(rawResult);
-    switch (result.getType()) {
+    return new TextResultHandler(activity, result, rawResult);
+    /*switch (result.getType()) {
       case ADDRESSBOOK:
         return new AddressBookResultHandler(activity, result);
       case EMAIL_ADDRESS:
@@ -55,7 +56,7 @@ public final class ResultHandlerFactory {
         return new ISBNResultHandler(activity, result, rawResult);
       default:
         return new TextResultHandler(activity, result, rawResult);
-    }
+    }*/
   }
 
   private static ParsedResult parseResult(Result rawResult) {

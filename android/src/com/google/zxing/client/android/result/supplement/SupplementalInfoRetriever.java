@@ -32,10 +32,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.google.zxing.client.android.history.HistoryManager;
-import com.google.zxing.client.result.ISBNParsedResult;
 import com.google.zxing.client.result.ParsedResult;
-import com.google.zxing.client.result.ProductParsedResult;
-import com.google.zxing.client.result.URIParsedResult;
+import com.google.zxing.client.result.TextParsedResult;
 
 public abstract class SupplementalInfoRetriever extends AsyncTask<Object,Object,Object> {
 
@@ -45,28 +43,14 @@ public abstract class SupplementalInfoRetriever extends AsyncTask<Object,Object,
                                           ParsedResult result,
                                           HistoryManager historyManager,
                                           Context context) {
-    if (result instanceof URIParsedResult) {
-      SupplementalInfoRetriever uriRetriever = 
-          new URIResultInfoRetriever(textView, (URIParsedResult) result, historyManager, context);
-      uriRetriever.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-      SupplementalInfoRetriever titleRetriever = 
-          new TitleRetriever(textView, (URIParsedResult) result, historyManager);
-      titleRetriever.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-    } else if (result instanceof ProductParsedResult) {
-      ProductParsedResult productParsedResult = (ProductParsedResult) result;
-      String productID = productParsedResult.getProductID();
-      SupplementalInfoRetriever productRetriever =
-          new ProductResultInfoRetriever(textView, productID, historyManager, context);
-      productRetriever.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-    } else if (result instanceof ISBNParsedResult) {
-      String isbn = ((ISBNParsedResult) result).getISBN();
-      SupplementalInfoRetriever productInfoRetriever = 
-          new ProductResultInfoRetriever(textView, isbn, historyManager, context);
-      productInfoRetriever.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-      SupplementalInfoRetriever bookInfoRetriever = 
-          new BookResultInfoRetriever(textView, isbn, historyManager, context);
-      bookInfoRetriever.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-    }
+	  if (result instanceof TextParsedResult) {
+	      SupplementalInfoRetriever uriRetriever = 
+	          new URIResultInfoRetriever(textView, (TextParsedResult) result, historyManager, context);
+	      uriRetriever.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+	      SupplementalInfoRetriever titleRetriever = 
+	          new TitleRetriever(textView, (TextParsedResult) result, historyManager);
+	      titleRetriever.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+	  }
   }
 
   private final WeakReference<TextView> textViewRef;

@@ -126,17 +126,17 @@ public final class Decoder {
       result.setOther(new QRCodeDecoderMetaData(true));
 
       return result;
-
-    } catch (FormatException | ChecksumException e) {
-      // Throw the exception from the original reading
-      if (fe != null) {
-        throw fe;
-      }
+   // Throw the exception from the original reading
+    } catch (FormatException e) {
+    	if (fe != null) {
+          throw fe;
+        }
+        throw e;
+    } catch (ChecksumException e) {
       if (ce != null) {
         throw ce;
       }
       throw e;
-
     }
   }
 

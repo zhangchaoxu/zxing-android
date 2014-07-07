@@ -62,7 +62,7 @@ public final class ExpandedProductResultParser extends ResultParser {
     String price = null;
     String priceIncrement = null;
     String priceCurrency = null;
-    Map<String,String> uncommonAIs = new HashMap<>();
+    Map<String,String> uncommonAIs = new HashMap<String,String>();
 
     int i = 0;
 
@@ -76,8 +76,64 @@ public final class ExpandedProductResultParser extends ResultParser {
       i += ai.length() + 2;
       String value = findValue(i, rawText);
       i += value.length();
-
-      switch (ai) {
+      if("00".equalsIgnoreCase(ai)){
+    	  sscc = value;
+      }else if("01".equalsIgnoreCase(ai)){
+    	  productID = value; 
+      }else if("10".equalsIgnoreCase(ai)){
+    	  lotNumber = value;
+      }else if("11".equalsIgnoreCase(ai)){
+    	  productionDate = value;
+      }else if("13".equalsIgnoreCase(ai)){
+    	  packagingDate = value;
+      }else if("15".equalsIgnoreCase(ai)){
+    	  bestBeforeDate = value;
+      }else if("17".equalsIgnoreCase(ai)){
+    	  expirationDate = value;
+      }else if("3100".equalsIgnoreCase(ai) || "3101".equalsIgnoreCase(ai) || "3102".equalsIgnoreCase(ai)
+    		  || "3103".equalsIgnoreCase(ai) || "3104".equalsIgnoreCase(ai) || "3105".equalsIgnoreCase(ai)
+    		  || "3106".equalsIgnoreCase(ai) || "3107".equalsIgnoreCase(ai) || "3108".equalsIgnoreCase(ai)
+    		  || "3109".equalsIgnoreCase(ai)){
+    	  weight = value;
+          weightType = ExpandedProductParsedResult.KILOGRAM;
+          weightIncrement = ai.substring(3);
+      }else if("3200".equalsIgnoreCase(ai) || "3201".equalsIgnoreCase(ai) || "3202".equalsIgnoreCase(ai)
+    		  || "3203".equalsIgnoreCase(ai) || "3204".equalsIgnoreCase(ai) || "3205".equalsIgnoreCase(ai)
+    		  || "3206".equalsIgnoreCase(ai) || "3207".equalsIgnoreCase(ai) || "3208".equalsIgnoreCase(ai)
+    		  || "3209".equalsIgnoreCase(ai)){
+    	  weight = value;
+          weightType = ExpandedProductParsedResult.POUND;
+          weightIncrement = ai.substring(3);
+      }else if("3920".equalsIgnoreCase(ai) || "3921".equalsIgnoreCase(ai) || "3922".equalsIgnoreCase(ai)
+    		  || "3923".equalsIgnoreCase(ai)){
+    	  price = value;
+          priceIncrement = ai.substring(3);
+      }else if("3930".equalsIgnoreCase(ai) || "3931".equalsIgnoreCase(ai) || "3932".equalsIgnoreCase(ai)
+    		  || "3933".equalsIgnoreCase(ai)){
+    	  if (value.length() < 4) {
+              // The value must have more of 3 symbols (3 for currency and
+              // 1 at least for the price)
+              // ExtendedProductParsedResult NOT created. Not match with RSS Expanded pattern
+            return null;
+          }
+          price = value.substring(3);
+          priceCurrency = value.substring(0, 3);
+          priceIncrement = ai.substring(3);
+      }else if("17".equalsIgnoreCase(ai)){
+    	  expirationDate = value;
+      }else if("17".equalsIgnoreCase(ai)){
+    	  expirationDate = value;
+      }else if("17".equalsIgnoreCase(ai)){
+    	  expirationDate = value;
+      }else if("17".equalsIgnoreCase(ai)){
+    	  expirationDate = value;
+      }else if("17".equalsIgnoreCase(ai)){
+    	  expirationDate = value;
+      }else{
+    	  // No match with common AIs
+    	  uncommonAIs.put(ai, value);
+      }
+      /*switch (ai) {
         case "00":
           sscc = value;
           break;
@@ -152,7 +208,7 @@ public final class ExpandedProductResultParser extends ResultParser {
           // No match with common AIs
           uncommonAIs.put(ai, value);
           break;
-      }
+      }*/
     }
 
     return new ExpandedProductParsedResult(rawText,

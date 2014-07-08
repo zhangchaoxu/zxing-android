@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
@@ -48,8 +49,10 @@ public final class ViewfinderView extends View {
 
   private CameraManager cameraManager;
   private final Paint paint;
+  private final Paint paintCorner;
   private Bitmap resultBitmap;
   private final int maskColor;
+  private final int cornerColor;
   private final int resultColor;
   private final int laserColor;
   private final int resultPointColor;
@@ -63,11 +66,13 @@ public final class ViewfinderView extends View {
 
     // Initialize these once for performance rather than calling them every time in onDraw().
     paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    paintCorner = new Paint(Paint.DITHER_FLAG);
     Resources resources = getResources();
     maskColor = resources.getColor(R.color.viewfinder_mask);
     resultColor = resources.getColor(R.color.result_view);
     laserColor = resources.getColor(R.color.viewfinder_laser);
     resultPointColor = resources.getColor(R.color.possible_result_points);
+    cornerColor = resources.getColor(R.color.viewfinder_corner);
     scannerAlpha = 0;
     possibleResultPoints = new ArrayList<ResultPoint>(5);
     lastPossibleResultPoints = null;
@@ -92,11 +97,32 @@ public final class ViewfinderView extends View {
     int height = canvas.getHeight();
 
     // Draw the exterior (i.e. outside the framing rect) darkened
+    // 画取景框四周的四个阴影矩形
     paint.setColor(resultBitmap != null ? resultColor : maskColor);
     canvas.drawRect(0, 0, width, frame.top, paint);
     canvas.drawRect(0, frame.top, frame.left, frame.bottom + 1, paint);
     canvas.drawRect(frame.right + 1, frame.top, width, frame.bottom + 1, paint);
     canvas.drawRect(0, frame.bottom + 1, width, height, paint);
+    // 画取景框四个角落的绿色夹角
+    paintCorner.setColor(cornerColor);
+	paintCorner.setAntiAlias(true);
+	paintCorner.setStrokeWidth(5);
+	canvas.drawLine(frame.left - 2.5f, frame.top, frame.left + 22,
+			frame.top, paintCorner);
+	canvas.drawLine(frame.left, frame.top, frame.left, frame.top + 22,
+			paintCorner);
+	canvas.drawLine(frame.right - 22, frame.top, frame.right + 2.5f,
+			frame.top, paintCorner);
+	canvas.drawLine(frame.right, frame.top, frame.right, frame.top + 22,
+			paintCorner);
+	canvas.drawLine(frame.left - 2.5f, frame.bottom, frame.left + 22,
+			frame.bottom, paintCorner);
+	canvas.drawLine(frame.left, frame.bottom - 22, frame.left,
+			frame.bottom, paintCorner);
+	canvas.drawLine(frame.right - 22, frame.bottom, frame.right + 2.5f,
+			frame.bottom, paintCorner);
+	canvas.drawLine(frame.right, frame.bottom - 22, frame.right,
+			frame.bottom, paintCorner);
 
     if (resultBitmap != null) {
       // Draw the opaque result bitmap over the scanning rectangle

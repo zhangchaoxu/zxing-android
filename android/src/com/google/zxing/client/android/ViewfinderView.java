@@ -27,6 +27,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -56,6 +58,9 @@ public final class ViewfinderView extends View {
   private final int resultColor;
   private final int laserColor;
   private final int resultPointColor;
+  private final Drawable scanLine;
+  int loopTop;
+  boolean isFirst;
   private int scannerAlpha;
   private List<ResultPoint> possibleResultPoints;
   private List<ResultPoint> lastPossibleResultPoints;
@@ -73,6 +78,7 @@ public final class ViewfinderView extends View {
     laserColor = resources.getColor(R.color.viewfinder_laser);
     resultPointColor = resources.getColor(R.color.possible_result_points);
     cornerColor = resources.getColor(R.color.viewfinder_corner);
+    scanLine = resources.getDrawable(R.drawable.scan_line);
     scannerAlpha = 0;
     possibleResultPoints = new ArrayList<ResultPoint>(5);
     lastPossibleResultPoints = null;
@@ -93,6 +99,12 @@ public final class ViewfinderView extends View {
     if (frame == null || previewFrame == null) {
       return;
     }
+    
+    if (!isFirst) {
+		loopTop = frame.top;
+		isFirst = true;
+	}
+    
     int width = canvas.getWidth();
     int height = canvas.getHeight();
 
@@ -134,8 +146,15 @@ public final class ViewfinderView extends View {
       paint.setColor(laserColor);
       paint.setAlpha(SCANNER_ALPHA[scannerAlpha]);
       scannerAlpha = (scannerAlpha + 1) % SCANNER_ALPHA.length;
-      int middle = frame.height() / 2 + frame.top;
-      canvas.drawRect(frame.left + 2, middle - 1, frame.right - 1, middle + 2, paint);
+      // 绘制中间的镭射线
+      // int middle = frame.height() / 2 + frame.top;
+      // canvas.drawRect(frame.left + 2, middle - 1, frame.right - 1, middle + 2, paint);
+      loopTop++;
+      if (loopTop >= frame.bottom) {
+		loopTop = frame.top;
+      }
+      Rect lineRect = new Rect(frame.left, loopTop - 10, frame.right, loopTop + 10);
+      canvas.drawBitmap(((BitmapDrawable)scanLine).getBitmap(), null, lineRect, paint);  
       
       float scaleX = frame.width() / (float) previewFrame.width();
       float scaleY = frame.height() / (float) previewFrame.height();
@@ -159,6 +178,8 @@ public final class ViewfinderView extends View {
           }
         }
       }
+      
+      // 绘制一闪一闪的黄点
       if (currentLast != null) {
         paint.setAlpha(CURRENT_POINT_OPACITY / 2);
         paint.setColor(resultPointColor);
@@ -172,6 +193,8 @@ public final class ViewfinderView extends View {
         }
       }
 
+      // 仅仅刷新中间的红线，让其一闪一闪的动画,不是整个矩形刷新
+      loopTop+=2;
       // Request another update at the animation interval, but only repaint the laser line,
       // not the entire viewfinder mask.
       postInvalidateDelayed(ANIMATION_DELAY,

@@ -18,7 +18,6 @@ package com.google.zxing.client.android.camera;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.graphics.Point;
 import android.hardware.Camera;
 import android.preference.PreferenceManager;
@@ -26,7 +25,6 @@ import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 
-import com.google.zxing.client.android.CaptureActivity;
 import com.google.zxing.client.android.PreferencesActivity;
 
 /**
@@ -35,7 +33,7 @@ import com.google.zxing.client.android.PreferencesActivity;
  */
 final class CameraConfigurationManager {
 
-  private static final String TAG = "CameraConfiguration";
+  private static final String TAG = CameraConfigurationManager.class.getSimpleName();
 
   private final Context context;
   private Point screenResolution;

@@ -1,4 +1,5 @@
 # Zxing QRCode
+<img align="center" src="https://raw.github.com/wiki/zxing/zxing/zxing-logo.png"/>
 ZXing ("zebra crossing") is a great open-source project that support multi-format 1D/2D barcode scan.
 But we only need QR Code, so remove the support of other code formats in the folder zxing-core-qrcode.
 For which we can compress the jar package from 550k to 150k

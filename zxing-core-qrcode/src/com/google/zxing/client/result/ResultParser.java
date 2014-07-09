@@ -68,7 +68,7 @@ public abstract class ResultParser {
   }
 
   public static ParsedResult parseResult(Result theResult) {
-    return new TextParsedResult(theResult.getText(), null);
+    return new ParsedResult(theResult.getText());
   }
 
   protected static void maybeAppend(String value, StringBuilder result) {

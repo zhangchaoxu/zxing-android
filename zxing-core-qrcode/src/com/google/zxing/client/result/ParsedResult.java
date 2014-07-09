@@ -27,19 +27,17 @@ package com.google.zxing.client.result;
  *
  * @author Sean Owen
  */
-public abstract class ParsedResult {
+public final class ParsedResult {
 
-  private final ParsedResultType type;
-
-  protected ParsedResult(ParsedResultType type) {
-    this.type = type;
+  private final String text;
+  
+  protected ParsedResult(String text) {
+	this.text = text;
   }
 
-  public final ParsedResultType getType() {
-    return type;
+  public String getDisplayResult(){
+	return text;
   }
-
-  public abstract String getDisplayResult();
 
   @Override
   public final String toString() {

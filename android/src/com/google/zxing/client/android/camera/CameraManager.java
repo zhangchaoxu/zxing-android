@@ -17,7 +17,6 @@
 package com.google.zxing.client.android.camera;
 
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.hardware.Camera;
@@ -26,7 +25,6 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 
 import com.google.zxing.PlanarYUVLuminanceSource;
-import com.google.zxing.client.android.CaptureActivity;
 import com.google.zxing.client.android.camera.open.OpenCameraInterface;
 
 import java.io.IOException;
@@ -43,9 +41,9 @@ public final class CameraManager {
   private static final String TAG = CameraManager.class.getSimpleName();
 
   private static final int MIN_FRAME_WIDTH = 240;
-  private static final int MIN_FRAME_HEIGHT = 240;
+  // private static final int MIN_FRAME_HEIGHT = 240;
   private static final int MAX_FRAME_WIDTH = 1200; // = 5/8 * 1920
-  private static final int MAX_FRAME_HEIGHT = 675; // = 5/8 * 1080
+  // private static final int MAX_FRAME_HEIGHT = 675; // = 5/8 * 1080
 
   private final Context context;
   private final CameraConfigurationManager configManager;
@@ -246,7 +244,7 @@ public final class CameraManager {
     return framingRect;
   }
   
-  private static int findDesiredDimensionInRange(int resolution, int hardMin, int hardMax) {
+  /*private static int findDesiredDimensionInRange(int resolution, int hardMin, int hardMax) {
     int dim = 5 * resolution / 8; // Target 5/8 of each dimension
     if (dim < hardMin) {
       return hardMin;
@@ -255,7 +253,7 @@ public final class CameraManager {
       return hardMax;
     }
     return dim;
-  }
+  }*/
 
   /**
    * Like {@link #getFramingRect} but coordinates are in terms of the preview frame,

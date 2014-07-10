@@ -33,7 +33,6 @@ import java.util.Collection;
 
 import com.google.zxing.client.android.history.HistoryManager;
 import com.google.zxing.client.result.ParsedResult;
-import com.google.zxing.client.result.TextParsedResult;
 
 public abstract class SupplementalInfoRetriever extends AsyncTask<Object,Object,Object> {
 
@@ -43,14 +42,11 @@ public abstract class SupplementalInfoRetriever extends AsyncTask<Object,Object,
                                           ParsedResult result,
                                           HistoryManager historyManager,
                                           Context context) {
-	  if (result instanceof TextParsedResult) {
-	      SupplementalInfoRetriever uriRetriever = 
-	          new URIResultInfoRetriever(textView, (TextParsedResult) result, historyManager, context);
-	      uriRetriever.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-	      SupplementalInfoRetriever titleRetriever = 
-	          new TitleRetriever(textView, (TextParsedResult) result, historyManager);
-	      titleRetriever.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-	  }
+	  
+	  /*SupplementalInfoRetriever uriRetriever = new URIResultInfoRetriever(textView, (TextParsedResult) result, historyManager, context);
+	  uriRetriever.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);*/
+	  SupplementalInfoRetriever titleRetriever = new TitleRetriever(textView, result, historyManager);
+	  titleRetriever.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
   }
 
   private final WeakReference<TextView> textViewRef;

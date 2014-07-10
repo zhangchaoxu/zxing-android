@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import com.google.zxing.client.android.HttpHelper;
 import com.google.zxing.client.android.history.HistoryManager;
-import com.google.zxing.client.result.TextParsedResult;
+import com.google.zxing.client.result.ParsedResult;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -38,9 +38,9 @@ final class TitleRetriever extends SupplementalInfoRetriever {
 
   private final String httpUrl;
 
-  TitleRetriever(TextView textView, TextParsedResult result, HistoryManager historyManager) {
+  TitleRetriever(TextView textView, ParsedResult result, HistoryManager historyManager) {
     super(textView, historyManager);
-    this.httpUrl = result.getText();
+    this.httpUrl = result.toString();
   }
 
   @Override

@@ -319,33 +319,6 @@ public final class HistoryManager {
     }
   }
 
-  static Uri saveHistory(String history) {
-    File bsRoot = new File(Environment.getExternalStorageDirectory(), "BarcodeScanner");
-    File historyRoot = new File(bsRoot, "History");
-    if (!historyRoot.exists() && !historyRoot.mkdirs()) {
-      Log.w(TAG, "Couldn't make dir " + historyRoot);
-      return null;
-    }
-    File historyFile = new File(historyRoot, "history-" + System.currentTimeMillis() + ".csv");
-    OutputStreamWriter out = null;
-    try {
-      out = new OutputStreamWriter(new FileOutputStream(historyFile), Charset.forName("UTF-8"));
-      out.write(history);
-      return Uri.parse("file://" + historyFile.getAbsolutePath());
-    } catch (IOException ioe) {
-      Log.w(TAG, "Couldn't access file " + historyFile + " due to " + ioe);
-      return null;
-    } finally {
-      if (out != null) {
-        try {
-          out.close();
-        } catch (IOException ioe) {
-          // do nothing
-        }
-      }
-    }
-  }
-
   private static String massageHistoryField(String value) {
     return value == null ? "" : value.replace("\"","\"\"");
   }

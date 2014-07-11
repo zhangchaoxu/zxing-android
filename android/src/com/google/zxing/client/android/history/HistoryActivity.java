@@ -115,29 +115,6 @@ public final class HistoryActivity extends ListActivity {
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
-      case R.id.menu_history_send:
-        CharSequence history = historyManager.buildHistory();
-        Parcelable historyFile = HistoryManager.saveHistory(history.toString());
-        if (historyFile == null) {
-          AlertDialog.Builder builder = new AlertDialog.Builder(this);
-          builder.setMessage(R.string.msg_unmount_usb);
-          builder.setPositiveButton(R.string.button_ok, null);
-          builder.show();
-        } else {
-          Intent intent = new Intent(Intent.ACTION_SEND, Uri.parse("mailto:"));
-          intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-          String subject = getResources().getString(R.string.history_email_title);
-          intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-          intent.putExtra(Intent.EXTRA_TEXT, subject);
-          intent.putExtra(Intent.EXTRA_STREAM, historyFile);
-          intent.setType("text/csv");
-          try {
-            startActivity(intent);
-          } catch (ActivityNotFoundException anfe) {
-            Log.w(TAG, anfe.toString());
-          }
-        }
-        break;
       case R.id.menu_history_clear_text:
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.msg_sure);

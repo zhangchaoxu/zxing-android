@@ -19,12 +19,9 @@ package com.google.zxing.client.android.history;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
-import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -34,6 +31,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
 import com.google.zxing.client.android.CaptureActivity;
 import com.google.zxing.client.android.Intents;
 import com.google.zxing.client.android.R;
@@ -123,6 +121,7 @@ public final class HistoryActivity extends ListActivity {
           @Override
           public void onClick(DialogInterface dialog, int i2) {
             historyManager.clearHistory();
+            Log.i(TAG, "history has been cleared");
             dialog.dismiss();
             finish();
           }

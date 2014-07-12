@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2008 ZXing authors
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.google.zxing.client.android;
 
 import com.google.zxing.Result;
@@ -327,7 +311,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
    */
   private void drawResultPoints(Bitmap barcode, float scaleFactor, Result rawResult) {
     ResultPoint[] points = rawResult.getResultPoints();
-    if (points != null && points.length == 4) {
+    if (points != null && points.length > 0) {
       Canvas canvas = new Canvas(barcode);
       Paint paint = new Paint();
       paint.setColor(getResources().getColor(R.color.result_points));
@@ -344,13 +328,6 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
   private void handleDecodeInternally(Result rawResult, ResultHandler resultHandler, Bitmap barcode) {
 
     CharSequence displayContents = resultHandler.getDisplayContents();
-
-    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-    if (resultHandler.getDefaultButtonID() != null && prefs.getBoolean(PreferencesActivity.KEY_AUTO_OPEN_WEB, false)) {
-      //resultHandler.handleButtonPress(resultHandler.getDefaultButtonID());
-      return;
-    }
 
     statusView.setVisibility(View.GONE);
     viewfinderView.setVisibility(View.GONE);

@@ -6,3 +6,7 @@ For which we can compress the jar package from 550k to 150k
 
 ## android
 android folder is the an Android demo of zxing, remove the support of other code formats except QRCode, and change the screenOrientation from landscope to portrait.
+
+## update log
+sync zxing/zxing master
+Update plugins, deps:Update plugins, deps

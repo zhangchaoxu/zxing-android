@@ -24,14 +24,32 @@ package com.google.zxing;
  */
 public final class ChecksumException extends ReaderException {
 
-  private static final ChecksumException instance = new ChecksumException();
+    private static final ChecksumException instance = new ChecksumException();
 
-  private ChecksumException() {
-    // do nothing
-  }
+    private ChecksumException() {
+        // do nothing
+    }
 
-  public static ChecksumException getChecksumInstance() {
-    return instance;
-  }
+    private ChecksumException(Throwable cause) {
+        super(cause);
+    }
+
+    public static ChecksumException getChecksumInstance() {
+
+        if (isStackTrace) {
+            return new ChecksumException();
+        } else {
+            return instance;
+        }
+    }
+
+    public static ChecksumException getChecksumInstance(Throwable cause) {
+        if (isStackTrace) {
+            return new ChecksumException(cause);
+        } else {
+            return instance;
+        }
+    }
+
 
 }

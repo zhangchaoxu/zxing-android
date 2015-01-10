@@ -63,7 +63,6 @@ public final class BitMatrix implements Cloneable {
     }
 
     public static BitMatrix parse(String stringRepresentation, String setString, String unsetString) {
-        int pos = 0;
         if (stringRepresentation == null) {
             throw new IllegalArgumentException();
         }
@@ -73,8 +72,9 @@ public final class BitMatrix implements Cloneable {
         int rowStartPos = 0;
         int rowLength = -1;
         int nRows = 0;
+        int pos = 0;
         while (pos < stringRepresentation.length()) {
-            if (stringRepresentation.substring(pos, pos + 1).equals("\n") || stringRepresentation.substring(pos, pos + 1).equals("\r")) {
+            if (stringRepresentation.charAt(pos) == '\n' || stringRepresentation.charAt(pos) == '\r') {
                 if (bitsPos > rowStartPos) {
                     if (rowLength == -1) {
                         rowLength = bitsPos - rowStartPos;
@@ -157,11 +157,11 @@ public final class BitMatrix implements Cloneable {
     }
 
     /**
-     * +   * <p>XOR for {@link BitMatrix}.</p>
-     * +   * Flip the bit in this {@link BitMatrix} if the corresponding mask bit is set.
-     * +   *
-     * +   * @param mask
-     * +
+     * Exclusive-or (XOR): Flip the bit in this {@code BitMatrix} if the corresponding
+     * mask bit is set.
+     *
+     * @param mask XOR mask
+     *
      */
     public void xor(BitMatrix mask) {
         if (width != mask.getWidth() || height != mask.getHeight()
